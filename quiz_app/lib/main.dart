@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/answer.dart';
-import './Question.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,27 +11,40 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _questionIndex = 0;
+  int _totalScore = 0;
 
   List<Map<String, dynamic>> ques_ans = [
     {
       "question": "What's your favorite color?",
-      "answers": ["Red", "Green", "Blue"],
+      "answers": [
+        {"text": "Red", "score": 5},
+        {"text": "Green", "score": 30},
+        {"text": "Blue", "score": 10}
+      ],
     },
     {
       "question": "What's your favorite animal?",
-      "answers": ["Dog", "Cat", "Bird"]
+      "answers": [
+        {"text": "Dog", "score": 30},
+        {"text": "Cat", "score": 5},
+        {"text": "Rabbit", "score": 10}
+      ],
     },
     {
       "question": "What's your favorite food?",
-      "answers": ["Pizza", "Burger", "Pasta"]
+      "answers": [
+        {"text": "Pizza", "score": 30},
+        {"text": "Burger", "score": 5},
+        {"text": "Pasta", "score": 10}
+      ],
     },
   ];
 
-  void _answerChosen() {
+  void _answerChosen(int score) {
+    _totalScore += score;
     setState(() {
-      _questionIndex = (_questionIndex + 1) % ques_ans.length;
+      _questionIndex = (_questionIndex + 1);
     });
-    print('Answer chosen!');
   }
 
   @override
@@ -39,12 +52,13 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(title: Text("My first app")),
-          body: Column(children: [
-            Question(ques_ans[_questionIndex]["question"]),
-            Answer(_answerChosen, ques_ans[_questionIndex]["answers"][0]),
-            Answer(_answerChosen, ques_ans[_questionIndex]["answers"][1]),
-            Answer(_answerChosen, ques_ans[_questionIndex]["answers"][2]),
-          ])),
+          body: _questionIndex < ques_ans.length
+              ? Quiz(
+                  answerChosen: _answerChosen,
+                  questionIndex: _questionIndex,
+                  questions: ques_ans,
+                )
+              : Result(_totalScore)),
     );
   }
 }
