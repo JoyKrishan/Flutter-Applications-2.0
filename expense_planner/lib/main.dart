@@ -11,6 +11,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          primarySwatch: Colors.indigo,
+          accentColor: Colors.amber,
+          textTheme: ThemeData.light().textTheme.copyWith(
+              titleMedium: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18)),
+          appBarTheme: AppBarTheme(
+              titleTextStyle: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20))),
       title: 'Flutter Demo',
       home: MyHomePage(),
     );
@@ -23,12 +36,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-        id: "124fd", title: "Shoes", amount: 83.44, date: DateTime.now()),
-    Transaction(
-        id: "124fe", title: "Shirt", amount: 70.44, date: DateTime.now()),
-  ];
+  final List<Transaction> _transactions = [];
 
   void _addTransactions(String title, double amount) {
     Transaction newTx = Transaction(
@@ -65,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
             width: double.infinity,
             child: Card(
               elevation: 10,
-              color: Colors.blue,
+              color: Theme.of(context).primaryColor,
               child: Text("Hello"),
             ),
           ),
