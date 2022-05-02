@@ -26,7 +26,7 @@ class TranstionsList extends StatelessWidget {
                             color: Colors.purple,
                             style: BorderStyle.solid)),
                     child: Text(
-                      "\$${transactions[idx].amount}",
+                      "\$${transactions[idx].amount.toStringAsFixed(2)}",
                       style: TextStyle(
                           color: Colors.purple,
                           fontSize: 20,
