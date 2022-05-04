@@ -7,11 +7,11 @@ class Result extends StatelessWidget {
   Result(this._totalScore, this._restartQuiz);
 
   String getResult(int totalScore) {
-    if (totalScore < 10) {
-      return ("You are a bad person");
-    } else if (totalScore < 20) {
+    if (totalScore < 20) {
+      return "You are a bad person";
+    } else if (totalScore < 35) {
       return "You are a good person";
-    } else if (totalScore < 30) {
+    } else if (totalScore < 50) {
       return "You are a great person";
     } else {
       return "You are a super person";
