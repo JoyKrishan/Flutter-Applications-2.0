@@ -1,3 +1,4 @@
+import 'package:expense_planner/widgets/chart.dart';
 import 'package:flutter/material.dart';
 import 'models/transaction.dart';
 import 'widgets/new_transactions.dart';
@@ -38,6 +39,12 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
 
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((element) {
+      return element.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
   void _addTransactions(String title, double amount) {
     Transaction newTx = Transaction(
         id: DateTime.now().toString(),
@@ -69,15 +76,8 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text("My Flutter App"),
         ),
         body: Column(children: [
-          Container(
-            width: double.infinity,
-            child: Card(
-              elevation: 10,
-              color: Theme.of(context).primaryColor,
-              child: Text("Hello"),
-            ),
-          ),
-          TranstionsList(_transactions),
+          Chart(_transactions),
+          TranstionsList(_recentTransactions),
         ]),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _startAddNewTransaction(context),
