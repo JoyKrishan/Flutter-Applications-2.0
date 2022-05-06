@@ -37,6 +37,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
+  late final appbar = AppBar(
+    actions: [
+      IconButton(
+          onPressed: () => _startAddNewTransaction(context),
+          icon: Icon(Icons.add))
+    ],
+    title: Text("Expense Planner"),
+  );
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((element) {
@@ -72,18 +80,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-                onPressed: () => _startAddNewTransaction(context),
-                icon: Icon(Icons.add))
-          ],
-          title: Text("Expense Planner"),
-        ),
+        appBar: appbar,
         body: SingleChildScrollView(
           child: Column(children: [
-            Chart(_transactions),
-            TranstionsList(_recentTransactions, _removeTransactions),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appbar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.3,
+                child: Chart(_transactions)),
+            Container(
+                height: (MediaQuery.of(context).size.height -
+                        appbar.preferredSize.height -
+                        MediaQuery.of(context).padding.top) *
+                    0.7,
+                child:
+                    TranstionsList(_recentTransactions, _removeTransactions)),
           ]),
         ),
         floatingActionButton: FloatingActionButton(
