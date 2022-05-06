@@ -4,13 +4,14 @@ import 'package:intl/intl.dart';
 
 class TranstionsList extends StatelessWidget {
   final List<Transaction> transactions;
+  final Function removeTx;
 
-  TranstionsList(this.transactions);
+  TranstionsList(this.transactions, this.removeTx);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 300,
+        height: 450,
         child: transactions.isEmpty
             ? Column(children: [
                 Text(
@@ -43,6 +44,13 @@ class TranstionsList extends StatelessWidget {
                             ),
                           ),
                         ),
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Theme.of(context).errorColor,
+                        ),
+                        onPressed: () => removeTx(transactions[idx].id),
                       ),
                       title: Text(
                         transactions[idx].title,

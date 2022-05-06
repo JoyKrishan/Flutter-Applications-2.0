@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.indigo,
           accentColor: Colors.amber,
+          errorColor: Colors.red,
           textTheme: ThemeData.light()
               .textTheme
               .copyWith(button: TextStyle(color: Colors.white)),
@@ -62,6 +63,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  void _removeTransactions(String id) {
+    setState(() {
+      _transactions.removeWhere((tx) => tx.id == id);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,10 +80,12 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           title: Text("Expense Planner"),
         ),
-        body: Column(children: [
-          Chart(_transactions),
-          TranstionsList(_recentTransactions),
-        ]),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Chart(_transactions),
+            TranstionsList(_recentTransactions, _removeTransactions),
+          ]),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => _startAddNewTransaction(context),
           child: Icon(Icons.add),
