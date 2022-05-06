@@ -36,7 +36,7 @@ class Chart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 6,
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.all(20),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
@@ -49,7 +49,7 @@ class Chart extends StatelessWidget {
                           tx['amount'] as double,
                           tx['amount'] == 0.0
                               ? 0.0
-                              : maxSpending / (tx['amount'] as double)),
+                              : (tx['amount'] as double) / maxSpending),
                     ))
                 .toList()),
       ),

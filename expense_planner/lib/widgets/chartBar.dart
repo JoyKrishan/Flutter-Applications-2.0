@@ -8,6 +8,7 @@ class ChartBar extends StatelessWidget {
   ChartBar(this.label, this.totalAmount, this.totalPctAmount);
   @override
   Widget build(BuildContext context) {
+    print("The total amount ->>>>>>>>>>>>>>>>${totalPctAmount}");
     return Column(
       children: [
         Container(
@@ -20,7 +21,7 @@ class ChartBar extends StatelessWidget {
         Container(
           height: 60,
           width: 10,
-          child: Stack(children: [
+          child: Stack(alignment: AlignmentDirectional.bottomEnd, children: [
             Container(
                 decoration: BoxDecoration(
                     color: Color.fromARGB(255, 223, 222, 222),

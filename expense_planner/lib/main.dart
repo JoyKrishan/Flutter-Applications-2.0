@@ -15,11 +15,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.indigo,
           accentColor: Colors.amber,
-          textTheme: ThemeData.light().textTheme.copyWith(
-              titleMedium: TextStyle(
-                  fontFamily: 'OpenSans',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18)),
+          textTheme: ThemeData.light()
+              .textTheme
+              .copyWith(button: TextStyle(color: Colors.white)),
           appBarTheme: AppBarTheme(
               titleTextStyle: TextStyle(
                   fontFamily: 'OpenSans',
@@ -45,12 +43,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addTransactions(String title, double amount) {
+  void _addTransactions(String title, double amount, DateTime chosenDate) {
     Transaction newTx = Transaction(
         id: DateTime.now().toString(),
         title: title,
         amount: amount,
-        date: DateTime.now());
+        date: chosenDate);
     setState(() {
       _transactions.add(newTx);
     });
@@ -73,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () => _startAddNewTransaction(context),
                 icon: Icon(Icons.add))
           ],
-          title: Text("My Flutter App"),
+          title: Text("Expense Planner"),
         ),
         body: Column(children: [
           Chart(_transactions),
