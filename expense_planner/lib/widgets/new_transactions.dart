@@ -4,16 +4,44 @@ import 'package:flutter/material.dart';
 class NewTransactions extends StatefulWidget {
   final Function addTrans;
 
-  NewTransactions(this.addTrans);
+  NewTransactions(this.addTrans) {
+    print("Constructor NewTransactions");
+  }
 
   @override
-  State<NewTransactions> createState() => _NewTransactionsState();
+  // ignore: no_logic_in_create_state
+  State<NewTransactions> createState() {
+    print("Create state _NewTransactionState");
+    return _NewTransactionsState();
+  }
 }
 
 class _NewTransactionsState extends State<NewTransactions> {
   final titleController = TextEditingController();
   final amountController = TextEditingController();
   DateTime? _selectedDate;
+
+  _NewTransactionsState() {
+    print("Constructor of Transaction State");
+  }
+
+  @override
+  void initState() {
+    print("InitState of NewTransactionState");
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(NewTransactions oldWidget) {
+    print("WidgetUpdate of NewTransactionState");
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    print("Dispose of NewTransactionState");
+    super.dispose();
+  }
 
   void _submitData() {
     final txTitle = titleController.text;
