@@ -4,6 +4,7 @@ import 'package:meal_app/widgets/meal_item.dart';
 import '../models/Meals.dart';
 
 class CategoryMealScreen extends StatelessWidget {
+  static const routeName = "/category-meal";
   // final String categoryTitle;
   // final String categoryId;
   // const CategoryMealScreen(

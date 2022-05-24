@@ -16,11 +16,14 @@ class MealItem extends StatelessWidget {
     required this.duration,
   });
 
-  void selectMeal() {}
+  void selectMeal(BuildContext ctx) {
+    Navigator.pushNamed(ctx, "/meal-detail");
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: selectMeal,
+      onTap: () => selectMeal(context),
       child: Card(
         elevation: 4,
         margin: const EdgeInsets.all(10),
@@ -52,7 +55,7 @@ class MealItem extends StatelessWidget {
                     title,
                     softWrap: true,
                     overflow: TextOverflow.fade,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 25,
                       color: Colors.white,
                       fontWeight: FontWeight.normal,
