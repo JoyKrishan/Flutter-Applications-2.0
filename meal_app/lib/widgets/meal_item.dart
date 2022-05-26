@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/models/Meals.dart';
+import 'package:meal_app/screens/meal_detail_screen.dart';
 
 class MealItem extends StatelessWidget {
+  final String id;
   final String title;
   final String imageUrl;
   final Complexity complexity;
@@ -9,6 +11,7 @@ class MealItem extends StatelessWidget {
   final int duration;
 
   MealItem({
+    required this.id,
     required this.title,
     required this.imageUrl,
     required this.complexity,
@@ -17,7 +20,7 @@ class MealItem extends StatelessWidget {
   });
 
   void selectMeal(BuildContext ctx) {
-    Navigator.pushNamed(ctx, "/meal-detail");
+    Navigator.pushNamed(ctx, MealDetailScreen.routeName, arguments: id);
   }
 
   @override
