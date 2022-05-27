@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_app/screens/filters_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
@@ -34,18 +35,30 @@ class MainDrawer extends StatelessWidget {
             alignment: Alignment.centerLeft,
             height: 120,
             width: double.infinity,
-            child: Text(
-              "Cooking Up!",
-              style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontWeight: FontWeight.w900,
-                  fontSize: 40),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Text(
+                "Cooking Up!",
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 40),
+              ),
             ),
           ),
           buildCustomListTile(
-              icon: Icons.restaurant, text: "Meals", pageSelect: () {}),
+              icon: Icons.restaurant,
+              text: "Meals",
+              pageSelect: () {
+                return Navigator.pushReplacementNamed(context, "/");
+              }),
           buildCustomListTile(
-              icon: Icons.settings, text: "Filter", pageSelect: () {}),
+              icon: Icons.settings,
+              text: "Filter",
+              pageSelect: () {
+                return Navigator.pushReplacementNamed(
+                    context, FiltersScreen.routeName);
+              }),
         ],
       ),
     );

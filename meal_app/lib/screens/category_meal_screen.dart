@@ -1,38 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:meal_app/dummy_data.dart';
+
 import 'package:meal_app/widgets/meal_item.dart';
 import '../models/Meals.dart';
 
-class CategoryMealScreen extends StatelessWidget {
+class CategoryMealScreen extends StatefulWidget {
   static const routeName = "/category-meal";
+  final List<Meal> availableMeals;
+  CategoryMealScreen(this.availableMeals);
+  @override
+  State<CategoryMealScreen> createState() => _CategoryMealScreenState();
+}
+
+class _CategoryMealScreenState extends State<CategoryMealScreen> {
   // final String categoryTitle;
-  // final String categoryId;
-  // const CategoryMealScreen(
-  //     {Key? key, required this.categoryTitle, required this.categoryId})
-  //     : super(key: key);
+  late List<Meal> displayMeals;
+  late String categoryTitle;
+  bool _loaded = false;
+
+  @override
+  void didChangeDependencies() {
+    if (_loaded == false) {
+      final routeArgs =
+          ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+      categoryTitle = routeArgs['title']!;
+      final String categoryId = routeArgs['id']!;
+      displayMeals = widget.availableMeals
+          .where(
+            (meal) => meal.categories.contains(categoryId),
+          )
+          .toList();
+      _loaded == true;
+    }
+    super.didChangeDependencies();
+  }
+
+  void removeItem(mealId) {
+    setState(() {
+      displayMeals.removeWhere((meal) => meal.id == mealId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final routeArgs =
-        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
-    final String categoryTitle = routeArgs['title']!;
-    final String categoryId = routeArgs['id']!;
-    final List<Meal> categoryMeals = DUMMY_MEALS
-        .where(
-          (meal) => meal.categories.contains(categoryId),
-        )
-        .toList();
     return Scaffold(
       appBar: AppBar(title: Text(categoryTitle)),
       body: ListView.builder(
         itemBuilder: (_, idx) => MealItem(
-            id: categoryMeals[idx].id,
-            title: categoryMeals[idx].title,
-            imageUrl: categoryMeals[idx].imageUrl,
-            complexity: categoryMeals[idx].complexity,
-            affordability: categoryMeals[idx].affordability,
-            duration: categoryMeals[idx].duration),
-        itemCount: categoryMeals.length,
+            id: displayMeals[idx].id,
+            title: displayMeals[idx].title,
+            imageUrl: displayMeals[idx].imageUrl,
+            complexity: displayMeals[idx].complexity,
+            affordability: displayMeals[idx].affordability,
+            duration: displayMeals[idx].duration,
+            removeMeal: removeItem),
+        itemCount: displayMeals.length,
       ),
     );
   }
