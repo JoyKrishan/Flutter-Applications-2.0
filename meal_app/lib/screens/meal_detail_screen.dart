@@ -27,7 +27,7 @@ class MealDetailScreen extends StatelessWidget {
             border: Border.all(width: 5, color: Colors.white60),
             borderRadius: BorderRadius.circular(10)),
         height: mediaData.size.height * 0.3,
-        width: 300,
+        width: 350,
         child: listWidget);
   }
 
@@ -47,7 +47,7 @@ class MealDetailScreen extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
                 height: mediaData.size.height * 0.4,
                 width: double.infinity,
                 child: Image.network(
@@ -60,6 +60,8 @@ class MealDetailScreen extends StatelessWidget {
                   mediaData: mediaData,
                   listWidget: ListView.builder(
                     itemBuilder: (ctx, idx) => Card(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 6),
                       child: Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: Text(
@@ -77,17 +79,21 @@ class MealDetailScreen extends StatelessWidget {
                   mediaData: mediaData,
                   listWidget: ListView.builder(
                     itemBuilder: (ctx, idx) {
-                      return ListTile(
-                        leading: CircleAvatar(child: Text("#${idx + 1}")),
-                        title: Text(
-                          selectedMeal.steps[idx],
-                        ),
+                      return Column(
+                        children: [
+                          ListTile(
+                            leading: CircleAvatar(child: Text("#${idx + 1}")),
+                            title: Text(
+                              selectedMeal.steps[idx],
+                            ),
+                          ),
+                          const Divider(),
+                        ],
                       );
                     },
                     itemCount: selectedMeal.steps.length,
                   ),
                   heightRatio: 0.4),
-              buildTextContainers(text: "Steps", context: context),
             ],
           ),
         ));

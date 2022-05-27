@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_app/screens/category_meal_screen.dart';
 import 'package:meal_app/screens/category_screen.dart';
 import 'package:meal_app/screens/meal_detail_screen.dart';
+import 'package:meal_app/screens/tabs_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: "Raleway",
           primarySwatch: Colors.teal,
-          accentColor: Colors.amberAccent,
+          accentColor: Colors.lime,
           canvasColor: const Color.fromARGB(255, 210, 242, 246),
           appBarTheme: const AppBarTheme(
               titleTextStyle: TextStyle(
@@ -31,9 +32,12 @@ class MyApp extends StatelessWidget {
                   fontSize: 20))),
       initialRoute: "/",
       routes: {
-        "/": (ctx) => CategoriesScreen(),
+        "/": (ctx) => TabsScreen(),
         CategoryMealScreen.routeName: (ctx) => CategoryMealScreen(),
         MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
+      },
+      onUnknownRoute: (setttings) {
+        return MaterialPageRoute(builder: (ctx) => CategoriesScreen());
       },
     );
   }
