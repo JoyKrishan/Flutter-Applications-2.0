@@ -46,13 +46,13 @@ class _CategoryMealScreenState extends State<CategoryMealScreen> {
       appBar: AppBar(title: Text(categoryTitle)),
       body: ListView.builder(
         itemBuilder: (_, idx) => MealItem(
-            id: displayMeals[idx].id,
-            title: displayMeals[idx].title,
-            imageUrl: displayMeals[idx].imageUrl,
-            complexity: displayMeals[idx].complexity,
-            affordability: displayMeals[idx].affordability,
-            duration: displayMeals[idx].duration,
-            removeMeal: removeItem),
+          id: displayMeals[idx].id,
+          title: displayMeals[idx].title,
+          imageUrl: displayMeals[idx].imageUrl,
+          complexity: displayMeals[idx].complexity,
+          affordability: displayMeals[idx].affordability,
+          duration: displayMeals[idx].duration,
+        ),
         itemCount: displayMeals.length,
       ),
     );
