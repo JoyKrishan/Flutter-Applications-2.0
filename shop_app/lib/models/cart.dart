@@ -14,7 +14,7 @@ class CartItem {
 
 class Cart with ChangeNotifier {
   // productId as key and CartItem as value
-  Map<String, CartItem> _items = {};
+  final Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items {
     return {..._items};

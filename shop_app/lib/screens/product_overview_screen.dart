@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/cart_detail_screen.dart';
 
 import '../widgets/products_grid.dart';
 
@@ -17,6 +18,12 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, CartDetailScreen.routeName);
+        },
+        child: Icon(Icons.shopping_cart),
+      ),
       appBar: AppBar(
         title: const Text("My Shop"),
         actions: [
