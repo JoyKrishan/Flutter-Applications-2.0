@@ -4,6 +4,7 @@ import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/widgets/badge.dart';
 
 import '../widgets/products_grid.dart';
+import '../screens/cart_detail_screen.dart';
 
 enum FilterOptions { favourites, all }
 
@@ -20,6 +21,12 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, CartDetailScreen.routeName);
+        },
+        child: Icon(Icons.shopping_cart),
+      ),
       appBar: AppBar(
         title: const Text("My Shop"),
         actions: [

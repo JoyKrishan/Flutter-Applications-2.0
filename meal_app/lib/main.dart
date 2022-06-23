@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/dummy_data.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:page_transition/page_transition.dart';
 
 import './screens/category_meal_screen.dart';
 import './screens/category_screen.dart';
@@ -87,9 +89,15 @@ class _MyAppState extends State<MyApp> {
                   fontFamily: "RobotoCondensed",
                   fontWeight: FontWeight.bold,
                   fontSize: 20))),
-      initialRoute: "/",
+      home: AnimatedSplashScreen(
+          splash: Icon(
+            Icons.food_bank_sharp,
+            size: 100,
+          ),
+          splashTransition: SplashTransition.fadeTransition,
+          nextScreen: TabsScreen(_favouriteMeals),
+          pageTransitionType: PageTransitionType.fade),
       routes: {
-        "/": (ctx) => TabsScreen(_favouriteMeals),
         CategoryMealScreen.routeName: (ctx) =>
             CategoryMealScreen(_availableMeals),
         MealDetailScreen.routeName: (ctx) =>
