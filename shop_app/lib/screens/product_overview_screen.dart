@@ -5,6 +5,7 @@ import 'package:shop_app/widgets/badge.dart';
 
 import '../widgets/products_grid.dart';
 import '../screens/cart_detail_screen.dart';
+import '../models/cart.dart';
 
 enum FilterOptions { favourites, all }
 
@@ -25,7 +26,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         onPressed: () {
           Navigator.pushNamed(context, CartDetailScreen.routeName);
         },
-        child: Icon(Icons.shopping_cart),
+        child: const Icon(Icons.shopping_cart),
       ),
       appBar: AppBar(
         title: const Text("My Shop"),
@@ -33,11 +34,11 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           PopupMenuButton(
             itemBuilder: (ctx) {
               return [
-                PopupMenuItem(
+                const PopupMenuItem(
                   child: Text("Only Favourites"),
                   value: FilterOptions.favourites,
                 ),
-                PopupMenuItem(
+                const PopupMenuItem(
                   child: Text("All Items"),
                   value: FilterOptions.all,
                 )
@@ -54,14 +55,16 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                 });
               }
             },
-            icon: Icon(Icons.more_vert),
+            icon: const Icon(Icons.more_vert),
           ),
           Consumer<Cart>(
             builder: (context, cart, ch) =>
                 Badge(child: ch!, value: cart.totalItem.toString()),
             child: IconButton(
               icon: const Icon(Icons.shopping_cart),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, CartDetailScreen.routeName);
+              },
             ),
           )
         ],

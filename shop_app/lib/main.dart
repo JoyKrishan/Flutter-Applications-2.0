@@ -25,7 +25,7 @@ class ShopApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: ProductOverviewScreen(),
         theme: ThemeData(
-            primarySwatch: Colors.amber,
+            primarySwatch: Colors.teal,
             accentColor: Colors.deepOrange,
             fontFamily: 'Lato'),
         routes: {
