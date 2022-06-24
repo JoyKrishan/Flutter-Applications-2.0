@@ -24,12 +24,6 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: CustomDrawer(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, CartDetailScreen.routeName);
-        },
-        child: const Icon(Icons.shopping_cart),
-      ),
       appBar: AppBar(
         title: const Text("My Shop"),
         actions: [
