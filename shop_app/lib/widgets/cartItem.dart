@@ -36,7 +36,7 @@ class CartItem extends StatelessWidget {
             size: 40,
           ),
         ),
-        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Theme.of(context).errorColor,
@@ -44,7 +44,7 @@ class CartItem extends StatelessWidget {
       ),
       child: Card(
         elevation: 6,
-        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Padding(
           padding: const EdgeInsets.all(5.0),
@@ -55,7 +55,8 @@ class CartItem extends StatelessWidget {
             leading: CircleAvatar(
               child: FittedBox(
                   child: Padding(
-                      padding: EdgeInsets.all(5), child: Text('\$${price}'))),
+                      padding: const EdgeInsets.all(5),
+                      child: Text('\$${price}'))),
             ),
           ),
         ),
