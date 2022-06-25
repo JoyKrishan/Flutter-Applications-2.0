@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/order_screen.dart';
 import 'package:shop_app/screens/product_overview_screen.dart';
+import 'package:shop_app/screens/user_product_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width * 0.4,
+      width: MediaQuery.of(context).size.width * 0.6,
       child: Drawer(
         child: Column(
           children: [
@@ -21,14 +22,25 @@ class CustomDrawer extends StatelessWidget {
               title: Text("Shop"),
               leading: Icon(Icons.shop),
               onTap: () {
-                Navigator.pushNamed(context, ProductOverviewScreen.routeName);
+                Navigator.pushReplacementNamed(
+                    context, ProductOverviewScreen.routeName);
               },
             ),
+            Divider(),
             ListTile(
               title: Text("Order"),
               leading: Icon(Icons.payment),
               onTap: () {
-                Navigator.pushNamed(context, OrderScreen.routeName);
+                Navigator.pushReplacementNamed(context, OrderScreen.routeName);
+              },
+            ),
+            Divider(),
+            ListTile(
+              title: Text("Manage product"),
+              leading: Icon(Icons.edit),
+              onTap: () {
+                Navigator.pushReplacementNamed(
+                    context, UserProductScreen.routeName);
               },
             )
           ],
