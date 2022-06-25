@@ -42,11 +42,27 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
+  void addNewProduct(Product prodData) {
+    _items.add(prodData);
+    notifyListeners();
+  }
+
   List<Product> showFavouriteItems(bool filter) {
     return _items.where((item) => item.isFavourite == filter).toList();
   }
 
   Product getById(String id) {
     return _items.firstWhere((item) => item.id == id);
+  }
+
+  void updateProduct(String prodID, Product updatedProduct) {
+    int prodIdx = _items.indexWhere((product) => prodID == product.id);
+    _items[prodIdx] = updatedProduct;
+    notifyListeners();
+  }
+
+  void deleteProduct(String prodID) {
+    _items.removeWhere((product) => product.id == prodID);
+    notifyListeners();
   }
 }
