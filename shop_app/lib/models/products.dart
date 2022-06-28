@@ -45,10 +45,10 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  void addNewProduct(Product prodData) {
+  Future<void> addNewProduct(Product prodData) {
     const url =
         'https://shop-app-af1f4-default-rtdb.firebaseio.com/products.json';
-    http
+    return http
         .post(Uri.parse(url),
             body: json.encode({
               "title": prodData.title,
