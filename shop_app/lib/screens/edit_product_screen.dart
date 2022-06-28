@@ -65,7 +65,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void saveForm() {
+  Future<void> saveForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       // either add or update a product
@@ -95,11 +95,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
             title: _prodTitle,
             price: _prodPrice!,
             imageUrl: _prodImgURL);
-        Provider.of<Products>(context, listen: false)
-            .addNewProduct(newProduct)
-            .catchError((error) {
+        try {
+          await Provider.of<Products>(context, listen: false)
+              .addNewProduct(newProduct);
+        } catch (error) {
           //TODO: Not very clear here
-          return showDialog<Null>(
+          print("I am here");
+          await showDialog(
               context: context,
               builder: (ctx) {
                 return AlertDialog(
@@ -114,12 +116,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   ],
                 );
               });
-        }).then((_) {
+        } finally {
           setState(() {
             isLoading = false;
           });
           Navigator.of(context).pop();
-        });
+        }
       }
     }
   }
