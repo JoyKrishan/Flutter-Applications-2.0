@@ -16,7 +16,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final FocusNode _priceFocusNode = FocusNode();
   final FocusNode _desciptionFocusNode = FocusNode();
   final FocusNode _imgUrlFocusNode = FocusNode();
-  final TextEditingController _imgUrlController = TextEditingController(text: );
+  final TextEditingController _imgUrlController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var _prodTitle, _prodImgURL, _prodDescription = "";
   double? _prodPrice = null;
@@ -97,11 +97,28 @@ class _EditProductScreenState extends State<EditProductScreen> {
             imageUrl: _prodImgURL);
         Provider.of<Products>(context, listen: false)
             .addNewProduct(newProduct)
-            .then((_) {
+            .catchError((error) {
+          //TODO: Not very clear here
+          return showDialog<Null>(
+              context: context,
+              builder: (ctx) {
+                return AlertDialog(
+                  title: Text("An error occured!"),
+                  content: Text("Could not complete the previous action"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                        },
+                        child: Text("Okay"))
+                  ],
+                );
+              });
+        }).then((_) {
           setState(() {
             isLoading = false;
           });
-          Navigator.pop(context);
+          Navigator.of(context).pop();
         });
       }
     }
@@ -196,7 +213,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                               ),
                       ),
                       Expanded(
-                        child: TextFormField(
+                          child: TextFormField(
                         controller: _imgUrlController,
                         decoration: InputDecoration(labelText: "Image Url"),
                         keyboardType: TextInputType.url,

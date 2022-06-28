@@ -46,8 +46,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addNewProduct(Product prodData) {
-    const url =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products.json';
+    const url = 'https://shop-app-af1f4-default-rtdb.firebaseio.com/produ';
     return http
         .post(Uri.parse(url),
             body: json.encode({
@@ -65,6 +64,9 @@ class Products with ChangeNotifier {
           imageUrl: prodData.imageUrl);
       _items.add(newProd);
       notifyListeners();
+    }).catchError((error) {
+      print(error);
+      throw error;
     });
   }
 
