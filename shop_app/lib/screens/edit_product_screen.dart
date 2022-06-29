@@ -100,7 +100,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
               .addNewProduct(newProduct);
         } catch (error) {
           //TODO: Not very clear here
-          print("I am here");
           await showDialog(
               context: context,
               builder: (ctx) {
