@@ -25,6 +25,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
 
   @override
   void initState() {
+    //Future.delayed(Duration.zero).then((_) => Provider.of<Products>(context).loadProductFromServer());
     super.initState();
   }
 
