@@ -24,6 +24,7 @@ class UserProductItem extends StatelessWidget {
               children: [
                 IconButton(
                     onPressed: () {
+                      print(id);
                       Navigator.pushNamed(context, EditProductScreen.routeName,
                           arguments: id);
                     },

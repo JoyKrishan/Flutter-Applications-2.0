@@ -18,7 +18,9 @@ class Products with ChangeNotifier {
     try {
       final response = await http.get(Uri.parse(getUrl));
       final result = json.decode(response.body) as Map<String, dynamic>;
+      _items.clear();
       result.forEach((key, item) {
+        //_items.clear();
         _items.add(Product(
             id: key,
             description: item['descriptiom'],
@@ -36,8 +38,7 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addNewProduct(Product prodData) async {
-    const url =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products.json';
+    const url = 'https://shop-app-af1f4-default-rtdb.firebaseio.com/products';
     try {
       final response = await http.post(Uri.parse(url),
           body: json.encode({
@@ -69,10 +70,23 @@ class Products with ChangeNotifier {
     return _items.firstWhere((item) => item.id == id);
   }
 
-  void updateProduct(String prodID, Product updatedProduct) {
+  Future<void> updateProduct(String prodID, Product updatedProduct) async {
     int prodIdx = _items.indexWhere((product) => prodID == product.id);
-    _items[prodIdx] = updatedProduct;
-    notifyListeners();
+    final url =
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products/$prodID.json';
+    // sanity check
+    if (prodIdx >= 0) {
+      final response = await http.patch(Uri.parse(url),
+          body: json.encode({
+            'title': updatedProduct.title,
+            'price': updatedProduct.price,
+            'descriptiom': updatedProduct.description,
+            'imageUrl': updatedProduct.imageUrl
+          }));
+      print(response.body);
+      _items[prodIdx] = updatedProduct;
+      notifyListeners();
+    }
   }
 
   void deleteProduct(String prodID) {

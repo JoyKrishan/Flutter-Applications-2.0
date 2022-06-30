@@ -24,12 +24,12 @@ class Cart with ChangeNotifier {
     return _items.length;
   }
 
-  double get totalAmount {
+  String get totalAmount {
     double total = 0.0;
     _items.forEach((key, cartItem) {
       total += cartItem.price * cartItem.quantity;
     });
-    return total;
+    return total.toStringAsFixed(1);
   }
 
   void addItem(String productID, String title, double price) {

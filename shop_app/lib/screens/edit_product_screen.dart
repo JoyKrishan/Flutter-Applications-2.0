@@ -42,7 +42,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         _imgUrlController.text = existingProduct!.imageUrl;
         _prodDescription = existingProduct!.description;
         _prodPrice = existingProduct!.price;
-        print(_imgUrlController.text);
+        // print(existingProduct);
       }
     }
     init = true;
@@ -65,6 +65,24 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
+  Future<void> showAlert() async {
+    await showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: Text("An error occured!"),
+            content: Text("Could not complete the previous action"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Text("Okay"))
+            ],
+          );
+        });
+  }
+
   Future<void> saveForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -73,6 +91,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         isLoading = true;
       });
       if (existingProduct != null) {
+        //print("I am here toooooooooooooo");
         // update a product
         final updateProduct = Product(
             id: existingProduct!.id,
@@ -81,12 +100,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
             price: _prodPrice!,
             imageUrl: _prodImgURL,
             isFavourite: existingProduct!.isFavourite);
-        Provider.of<Products>(context, listen: false)
-            .updateProduct(existingProduct!.id, updateProduct);
-        setState(() {
-          isLoading = false;
-        });
-        Navigator.pop(context);
+        try {
+          //print(existingProduct!.id);
+          //print(updateProduct);
+          await Provider.of<Products>(context, listen: false)
+              .updateProduct(existingProduct!.id, updateProduct);
+        } catch (err) {
+          await showAlert();
+        }
       } else {
         // add a product
         final newProduct = Product(
@@ -99,29 +120,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
           await Provider.of<Products>(context, listen: false)
               .addNewProduct(newProduct);
         } catch (error) {
-          //TODO: Not very clear here
-          await showDialog(
-              context: context,
-              builder: (ctx) {
-                return AlertDialog(
-                  title: Text("An error occured!"),
-                  content: Text("Could not complete the previous action"),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(ctx).pop();
-                        },
-                        child: Text("Okay"))
-                  ],
-                );
-              });
-        } finally {
-          setState(() {
-            isLoading = false;
-          });
-          Navigator.of(context).pop();
+          await showAlert();
         }
       }
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.of(context).pop();
     }
   }
 
