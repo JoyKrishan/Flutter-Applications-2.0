@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/models/products.dart';
+import 'package:shop_app/providers/products.dart';
 import 'package:shop_app/screens/edit_product_screen.dart';
 
 class UserProductItem extends StatelessWidget {
@@ -13,6 +13,7 @@ class UserProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
     return Column(
       children: [
         ListTile(
@@ -33,9 +34,16 @@ class UserProductItem extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                     )),
                 IconButton(
-                    onPressed: () {
-                      Provider.of<Products>(context, listen: false)
-                          .deleteProduct(id);
+                    onPressed: () async {
+                      try {
+                        await Provider.of<Products>(context, listen: false)
+                            .deleteProduct(id);
+                      } catch (err) {
+                        scaffold.removeCurrentSnackBar();
+                        scaffold.showSnackBar(const SnackBar(
+                            duration: Duration(seconds: 1),
+                            content: Text("Could not delete product")));
+                      }
                     },
                     icon: Icon(
                       Icons.delete,
