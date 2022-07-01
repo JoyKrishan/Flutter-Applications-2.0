@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop_app/models/http_exception.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -16,8 +20,21 @@ class Product with ChangeNotifier {
       required this.imageUrl,
       this.isFavourite = false});
 
-  void toggleIsFavourite() {
+  //utilizing optimistic updating
+  Future<void> toggleIsFavourite() async {
+    final patchUrl =
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products/$id.json';
+    bool? existingFav = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners();
+    final response = await http.patch(Uri.parse(patchUrl),
+        body: json.encode({"isFavourite": isFavourite}));
+    if (response.statusCode > 300) {
+      isFavourite = existingFav;
+      existingFav = null;
+      notifyListeners();
+      throw HttpException("Could not add to Favourites");
+    }
+    existingFav = null;
   }
 }

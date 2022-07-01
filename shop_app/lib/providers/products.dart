@@ -93,16 +93,18 @@ class Products with ChangeNotifier {
   //utilizing optimistic updating
   Future<void> deleteProduct(String prodID) async {
     final deleteUrl =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products/$prodID';
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products/$prodID.json';
     final prodIdx = _items.indexWhere((prod) => prod.id == prodID);
-    final existingProd = _items[prodIdx];
+    Product? existingProd = _items[prodIdx];
     _items.removeAt(prodIdx);
     notifyListeners();
     final response = await http.delete(Uri.parse(deleteUrl));
     if (response.statusCode > 300) {
       _items.insert(prodIdx, existingProd);
       notifyListeners();
+      existingProd = null;
       throw HttpException("Could not delete the product");
     }
+    existingProd = null;
   }
 }
