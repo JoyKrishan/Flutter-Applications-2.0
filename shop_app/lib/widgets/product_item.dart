@@ -20,7 +20,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
-    final scaffold = Scaffold.of(context);
+    final scaffold = ScaffoldMessenger.of(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -35,19 +35,24 @@ class ProductItem extends StatelessWidget {
           backgroundColor: Colors.black87,
           leading: IconButton(
               color: Theme.of(context).accentColor,
-              onPressed: () {
-                cart.addItem(product.id, product.title, product.price);
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text("Added item to cart!"),
-                  duration: Duration(seconds: 2),
-                  action: SnackBarAction(
-                    label: "UNDO",
-                    onPressed: () {
-                      cart.removeSingleItem(product.id);
-                    },
-                  ),
-                ));
+              onPressed: () async {
+                try {
+                  await cart.addItem(product.id, product.title, product.price);
+                  scaffold.clearSnackBars();
+                  scaffold.showSnackBar(SnackBar(
+                    content: Text("Added item to cart!"),
+                    duration: Duration(seconds: 2),
+                    action: SnackBarAction(
+                      label: "UNDO",
+                      onPressed: () {
+                        cart.removeSingleItem(product.id);
+                      },
+                    ),
+                  ));
+                } catch (err) {
+                  scaffold.showSnackBar(
+                      const SnackBar(content: Text("Could not add to Cart")));
+                }
               },
               icon: const Icon(Icons.shopping_cart)),
           // favourite icon
@@ -58,7 +63,7 @@ class ProductItem extends StatelessWidget {
                 try {
                   await product.toggleIsFavourite();
                 } catch (err) {
-                  scaffold.removeCurrentSnackBar();
+                  scaffold.clearSnackBars();
                   scaffold.showSnackBar(const SnackBar(
                       content: Text("Could not add to Favourites")));
                 }

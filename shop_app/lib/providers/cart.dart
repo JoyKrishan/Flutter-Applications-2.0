@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop_app/models/http_exception.dart';
 
 class CartItem {
   final String id;
@@ -32,8 +36,19 @@ class Cart with ChangeNotifier {
     return total.toStringAsFixed(1);
   }
 
-  void addItem(String productID, String title, double price) {
+  Future<void> addItem(String productID, String title, double price) async {
+    const cartPostUrl =
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts.json';
+
     if (_items.containsKey(productID)) {
+      final existingCartItem = _items[productID];
+      final cartPatchUrl =
+          'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts/${existingCartItem!.id}';
+      final response = await http.patch(Uri.parse(cartPatchUrl),
+          body: json.encode({"quantity": existingCartItem.quantity + 1}));
+      if (response.statusCode > 300) {
+        throw HttpException("Could not add product to Cart");
+      }
       _items.update(
           productID,
           (existingItem) => CartItem(
