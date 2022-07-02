@@ -5,15 +5,23 @@ import 'package:shop_app/providers/order.dart';
 import '../providers/cart.dart' show Cart;
 import '../widgets/cartItem.dart';
 
-class CartDetailScreen extends StatelessWidget {
+class CartDetailScreen extends StatefulWidget {
   static const routeName = "/cart-detail";
 
   const CartDetailScreen({Key? key}) : super(key: key);
 
   @override
+  State<CartDetailScreen> createState() => _CartDetailScreenState();
+}
+
+class _CartDetailScreenState extends State<CartDetailScreen> {
+  bool isLoadingOrder = false;
+
+  @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
     final cartItemList = cart.items.values.toList();
+    final scaffold = ScaffoldMessenger.of(context);
     return Scaffold(
         appBar: AppBar(
           title: Text("Cart"),
@@ -45,21 +53,53 @@ class CartDetailScreen extends StatelessWidget {
                         ),
                         backgroundColor: Theme.of(context).primaryColor,
                       ),
+                      // if (cartItemList.isEmpty)
+                      //   Padding(
+                      //     padding: const EdgeInsets.all(8.0),
+                      //     child: Text(
+                      //       'Order Now',
+                      //       style: TextStyle(
+                      //           fontSize: 20,
+                      //           fontWeight: FontWeight.bold,
+                      //           color: Theme.of(context).primaryColor),
+                      //     ),
+                      //   )
+                      // else
                       TextButton(
-                          onPressed: () {
-                            Provider.of<Order>(context, listen: false)
-                                .addOrderItem(
-                                    cartItems: cartItemList,
-                                    price: cart.totalAmount);
-                            cart.clear();
-                          },
-                          child: Text(
-                            'Order Now',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).primaryColor),
-                          ))
+                          onPressed: cartItemList.isEmpty
+                              ? null
+                              : () async {
+                                  setState(() {
+                                    isLoadingOrder = true;
+                                  });
+                                  try {
+                                    await Provider.of<Order>(context,
+                                            listen: false)
+                                        .addOrderItem(
+                                            cartItems: cartItemList,
+                                            price: cart.totalAmount);
+                                    cart.clear();
+                                  } catch (err) {
+                                    scaffold.showSnackBar(const SnackBar(
+                                        content:
+                                            Text("Could not add the Order")));
+                                  } finally {
+                                    setState(() {
+                                      isLoadingOrder = false;
+                                    });
+                                  }
+                                },
+                          child: isLoadingOrder
+                              ? const CircularProgressIndicator()
+                              : Text(
+                                  'Order Now',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: cartItemList.isEmpty
+                                          ? Colors.grey
+                                          : Theme.of(context).primaryColor),
+                                ))
                     ],
                   )),
             ),

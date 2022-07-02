@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -37,13 +38,10 @@ class Cart with ChangeNotifier {
   }
 
   Future<void> addItem(String productID, String title, double price) async {
-    const cartPostUrl =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts.json';
-
     if (_items.containsKey(productID)) {
       final existingCartItem = _items[productID];
       final cartPatchUrl =
-          'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts/${existingCartItem!.id}';
+          'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts/${existingCartItem!.id}.json';
       final response = await http.patch(Uri.parse(cartPatchUrl),
           body: json.encode({"quantity": existingCartItem.quantity + 1}));
       if (response.statusCode > 300) {
@@ -57,13 +55,23 @@ class Cart with ChangeNotifier {
               price: existingItem.price,
               quantity: existingItem.quantity + 1));
     } else {
-      _items.putIfAbsent(
-          productID,
-          () => CartItem(
-              id: DateTime.now().toString(),
-              title: title,
-              price: price,
-              quantity: 1));
+      const cartPostUrl =
+          'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts.json';
+      try {
+        final postRes = await http.post(Uri.parse(cartPostUrl),
+            body: json.encode({"title": title, "price": price, "quantity": 1}));
+        _items.putIfAbsent(
+            productID,
+            () => CartItem(
+                id: json.decode(postRes.body)['name'],
+                title: title,
+                price: price,
+                quantity: 1));
+        print(_items);
+      } catch (err) {
+        print(err);
+        rethrow;
+      }
     }
     notifyListeners();
   }
