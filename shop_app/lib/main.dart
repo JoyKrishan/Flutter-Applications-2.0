@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/order.dart';
 import 'package:shop_app/providers/products.dart';
+import 'package:shop_app/screens/auth_screen.dart';
 import 'package:shop_app/screens/edit_product_screen.dart';
 import 'package:shop_app/screens/cart_detail_screen.dart';
 import 'package:shop_app/screens/order_screen.dart';
@@ -28,7 +29,7 @@ class ShopApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: ProductOverviewScreen(),
+        home: AuthScreen(),
         theme: ThemeData(
             primarySwatch: Colors.teal,
             accentColor: Colors.deepOrange,
@@ -39,7 +40,8 @@ class ShopApp extends StatelessWidget {
           CartDetailScreen.routeName: (context) => CartDetailScreen(),
           OrderScreen.routeName: (context) => OrderScreen(),
           UserProductScreen.routeName: (context) => UserProductScreen(),
-          EditProductScreen.routeName: (context) => EditProductScreen()
+          EditProductScreen.routeName: (context) => EditProductScreen(),
+          AuthScreen.routeName: (context) => AuthScreen()
         },
       ),
     );
