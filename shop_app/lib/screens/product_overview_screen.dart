@@ -35,7 +35,22 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     if (!didInit) {
       Provider.of<Products>(context, listen: false)
           .loadProductFromServer()
-          .then((_) {
+          .catchError((err) {
+        showDialog<Null>(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                content: Text("Could not load product from server"),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        return Navigator.pop(ctx);
+                      },
+                      child: Text("Okay"))
+                ],
+              );
+            });
+      }).then((_) {
         setState(() {
           isLoading = false;
         });

@@ -33,6 +33,7 @@ class Products with ChangeNotifier {
     } catch (error) {
       print("hi");
       print(error);
+      rethrow;
     } finally {
       notifyListeners();
     }
