@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -29,51 +31,53 @@ class AuthScreen extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            height: deviceSize.height,
-            width: deviceSize.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Flexible(
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 20.0),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
-                    transform: Matrix4.rotationZ(-8 * pi / 180)
-                      ..translate(-10.0),
-                    // ..translate(-10.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.deepOrange.shade900,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 8,
-                          color: Colors.black26,
-                          offset: Offset(0, 2),
-                        )
-                      ],
-                    ),
-                    child: Text(
-                      'MyShop',
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .accentTextTheme
-                            .titleMedium!
-                            .color,
-                        fontSize: 50,
-                        fontFamily: 'Anton',
-                        fontWeight: FontWeight.normal,
+          SingleChildScrollView(
+            child: Container(
+              height: deviceSize.height,
+              width: deviceSize.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 20.0),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
+                      transform: Matrix4.rotationZ(-8 * pi / 180)
+                        ..translate(-10.0),
+                      // ..translate(-10.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.deepOrange.shade900,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 8,
+                            color: Colors.black26,
+                            offset: Offset(0, 2),
+                          )
+                        ],
+                      ),
+                      child: Text(
+                        'MyShop',
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .accentTextTheme
+                              .titleMedium!
+                              .color,
+                          fontSize: 50,
+                          fontFamily: 'Anton',
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Flexible(
-                  flex: deviceSize.width > 600 ? 1 : 2,
-                  child: AuthCard(),
-                ),
-              ],
+                  Flexible(
+                    flex: deviceSize.width > 600 ? 1 : 2,
+                    child: AuthCard(),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -102,6 +106,7 @@ class _AuthCardState extends State<AuthCard> {
   final _passwordController = TextEditingController();
 
   void _submit() {
+    var authProvider = Provider.of<Auth>(context, listen: false);
     if (!_formKey.currentState!.validate()) {
       // Invalid!
       return;
@@ -111,9 +116,11 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
     if (_authMode == AuthMode.Login) {
-      // Log user in
+      authProvider.logIn(
+          email: _authData['email']!, password: _authData['password']!);
     } else {
-      // Sign user up
+      authProvider.signup(
+          email: _authData['email']!, password: _authData['password']!);
     }
     setState(() {
       _isLoading = false;
