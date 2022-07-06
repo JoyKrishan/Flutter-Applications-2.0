@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/models/http_exception.dart';
 import 'package:shop_app/providers/auth.dart';
 
 enum AuthMode { Signup, Login }
@@ -105,7 +106,25 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
+  void showErrorDialog(message) {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            content: Text(message),
+            title: const Text("Something went wrong!"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: const Text("Okay"))
+            ],
+          );
+        });
+  }
+
+  void _submit() async {
     var authProvider = Provider.of<Auth>(context, listen: false);
     if (!_formKey.currentState!.validate()) {
       // Invalid!
@@ -115,12 +134,32 @@ class _AuthCardState extends State<AuthCard> {
     setState(() {
       _isLoading = true;
     });
-    if (_authMode == AuthMode.Login) {
-      authProvider.logIn(
-          email: _authData['email']!, password: _authData['password']!);
-    } else {
-      authProvider.signup(
-          email: _authData['email']!, password: _authData['password']!);
+    try {
+      if (_authMode == AuthMode.Login) {
+        await authProvider.logIn(
+            email: _authData['email']!, password: _authData['password']!);
+      } else {
+        await authProvider.signup(
+            email: _authData['email']!, password: _authData['password']!);
+      }
+    } on HttpException catch (err) {
+      var errMessage = "Could not authenticate user";
+      if (err.toString().contains("EMAIL_EXISTS")) {
+        errMessage = "Email already exists";
+      } else if (err.toString().contains("EMAIL_NOT_FOUND")) {
+        errMessage = "No user with ${_authData['email']} email";
+      } else if (err.toString().contains("INVALID_PASSWORD")) {
+        errMessage = "Password is invalid";
+      } else if (err.toString().contains("INVALID_EMAIL")) {
+        errMessage = "Email address is badly formatted";
+      } else if (err.toString().contains("WEAK_PASSWORD")) {
+        errMessage = "The password must be 6 characters long or more";
+      }
+      showErrorDialog(errMessage);
+    } catch (err) {
+      var errMessage =
+          "Could not ${_authMode == AuthMode.Login ? "Login" : "SignUp"}. Please try again later";
+      showErrorDialog(errMessage);
     }
     setState(() {
       _isLoading = false;
