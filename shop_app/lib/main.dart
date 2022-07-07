@@ -25,28 +25,33 @@ class ShopApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: ((ctx) => Auth())),
-        ChangeNotifierProvider(create: (ctx) => Products()),
+        ChangeNotifierProxyProvider<Auth, Products>(
+            create: (context) =>
+                Products(Provider.of<Auth>(context, listen: false).token!, []),
+            update: (ctx, auth, previousProducts) => Products(auth.token!,
+                previousProducts == null ? [] : previousProducts.getItems)),
         ChangeNotifierProvider(create: (ctx) => Cart()),
         ChangeNotifierProvider(create: (ctx) => Order())
       ],
       child: Consumer<Auth>(
         builder: (context, auth, _) => MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: auth.isAuth? ProductOverviewScreen(): AuthScreen(),
+          home: auth.isAuth ? ProductOverviewScreen() : AuthScreen(),
           theme: ThemeData(
               primarySwatch: Colors.teal,
               accentColor: Colors.deepOrange,
               fontFamily: 'Lato'),
           routes: {
             ProductDetailScreen.routeName: (context) => ProductDetailScreen(),
-            ProductOverviewScreen.routeName: (context) => ProductOverviewScreen(),
+            ProductOverviewScreen.routeName: (context) =>
+                ProductOverviewScreen(),
             CartDetailScreen.routeName: (context) => CartDetailScreen(),
             OrderScreen.routeName: (context) => OrderScreen(),
             UserProductScreen.routeName: (context) => UserProductScreen(),
             EditProductScreen.routeName: (context) => EditProductScreen(),
             AuthScreen.routeName: (context) => AuthScreen()
           },
-        ),,
+        ),
       ),
     );
   }

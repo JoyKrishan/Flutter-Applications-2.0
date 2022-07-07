@@ -41,7 +41,6 @@ class Auth with ChangeNotifier {
           }));
       final responseData = json.decode(response.body);
       if (responseData['error'] != null) {
-        print("Here");
         throw HttpException(responseData['error']['message']);
       }
       _token = responseData["idToken"];

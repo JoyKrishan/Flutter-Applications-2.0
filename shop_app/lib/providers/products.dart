@@ -7,15 +7,18 @@ import 'package:shop_app/models/http_exception.dart';
 import 'product.dart';
 
 class Products with ChangeNotifier {
-  final List<Product> _items = [];
+  final List<Product> _items;
+  final String _token;
+
+  Products(this._token, this._items);
 
   List<Product> get getItems {
     return [..._items];
   }
 
   Future<void> loadProductFromServer() async {
-    const getUrl =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products.json';
+    final getUrl =
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products.json?auth=${_token}';
     try {
       final response = await http.get(Uri.parse(getUrl));
       final result = json.decode(response.body) as Map<String, dynamic>;
@@ -31,7 +34,7 @@ class Products with ChangeNotifier {
             imageUrl: item['imageUrl']));
       });
     } catch (error) {
-      print("hi");
+      //print("hi");
       print(error);
       rethrow;
     } finally {

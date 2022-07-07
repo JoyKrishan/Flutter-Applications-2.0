@@ -29,7 +29,15 @@ class ProductItem extends StatelessWidget {
               Navigator.pushNamed(context, ProductDetailScreen.routeName,
                   arguments: product.id);
             },
-            child: Image.network(imageUrl, fit: BoxFit.fill)),
+            child: Image.network(imageUrl, fit: BoxFit.fill, errorBuilder:
+                (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+              return const Center(
+                  child: Text(
+                "Could not load image",
+                overflow: TextOverflow.clip,
+              ));
+            })),
         footer: GridTileBar(
           title: Text(title, textAlign: TextAlign.center),
           backgroundColor: Colors.black87,
