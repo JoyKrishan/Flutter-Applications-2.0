@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/order.dart';
 import 'package:shop_app/widgets/drawer.dart';
 
@@ -16,13 +17,20 @@ class OrderScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrderScreen> {
   bool isLoading = false;
+  bool errorLoading = false;
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
       setState(() {
         isLoading = true;
       });
-      await Provider.of<Order>(context, listen: false).setAndFetchOrders();
+      try {
+        await Provider.of<Order>(context, listen: false).setAndFetchOrders();
+      } catch (e) {
+        setState(() {
+          errorLoading = true;
+        });
+      }
       setState(() {
         isLoading = false;
       });
@@ -38,17 +46,21 @@ class _OrderScreenState extends State<OrderScreen> {
       drawer: CustomDrawer(),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Container(
-              margin: EdgeInsets.all(10),
-              child: Column(children: [
-                Expanded(
-                    child: ListView.builder(
-                  itemBuilder: ((context, i) =>
-                      ord.OrderItem(orderData: orders[i])),
-                  itemCount: orders.length,
-                )),
-              ]),
-            ),
+          : errorLoading
+              ? const Center(
+                  child: Text("Could not load products"),
+                )
+              : Container(
+                  margin: EdgeInsets.all(10),
+                  child: Column(children: [
+                    Expanded(
+                        child: ListView.builder(
+                      itemBuilder: ((context, i) =>
+                          ord.OrderItem(orderData: orders[i])),
+                      itemCount: orders.length,
+                    )),
+                  ]),
+                ),
     );
   }
 }

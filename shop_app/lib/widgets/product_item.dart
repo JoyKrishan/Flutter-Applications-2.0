@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth.dart';
 
 import 'package:shop_app/providers/product.dart';
 import 'package:shop_app/screens/product_detail_screen.dart';
@@ -69,7 +70,8 @@ class ProductItem extends StatelessWidget {
               color: Colors.deepOrange,
               onPressed: () async {
                 try {
-                  await product.toggleIsFavourite();
+                  await product.toggleIsFavourite(
+                      Provider.of<Auth>(context, listen: false).token!);
                 } catch (err) {
                   scaffold.clearSnackBars();
                   scaffold.showSnackBar(const SnackBar(

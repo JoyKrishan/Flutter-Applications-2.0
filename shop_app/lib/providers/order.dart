@@ -20,15 +20,18 @@ class OrderItem {
 }
 
 class Order with ChangeNotifier {
-  List<OrderItem> _items = [];
+  final String token;
+  List<OrderItem> _items;
+
+  Order(this.token, this._items);
 
   List<OrderItem> get items {
     return [..._items];
   }
 
   Future<void> setAndFetchOrders() async {
-    const getOrdersUrl =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/orders.json';
+    final getOrdersUrl =
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/orders.json?auth=$token';
     final response = await http.get(Uri.parse(getOrdersUrl));
     if (response.statusCode > 300) {
       throw HttpException("Could not refresh previous orders");
@@ -55,8 +58,8 @@ class Order with ChangeNotifier {
 
   Future<void> addOrderItem(
       {required List<CartItem> cartItems, required String price}) async {
-    const addOrderUrl =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/orders.json';
+    final addOrderUrl =
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/orders.json?auth=$token';
     final timestamp = DateTime.now();
     try {
       final response = await http.post(Uri.parse(addOrderUrl),

@@ -43,7 +43,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addNewProduct(Product prodData) async {
-    const url = 'https://shop-app-af1f4-default-rtdb.firebaseio.com/products';
+    final url =
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products?auth=${_token}';
     try {
       final response = await http.post(Uri.parse(url),
           body: json.encode({
@@ -78,7 +79,7 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String prodID, Product updatedProduct) async {
     int prodIdx = _items.indexWhere((product) => prodID == product.id);
     final url =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products/$prodID.json';
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products/$prodID.json?auth=${_token}';
     // sanity check
     if (prodIdx >= 0) {
       final response = await http.patch(Uri.parse(url),
@@ -97,7 +98,7 @@ class Products with ChangeNotifier {
   //utilizing optimistic updating
   Future<void> deleteProduct(String prodID) async {
     final deleteUrl =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products/$prodID.json';
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products/$prodID.json?auth=${_token}';
     final prodIdx = _items.indexWhere((prod) => prod.id == prodID);
     Product? existingProd = _items[prodIdx];
     _items.removeAt(prodIdx);
