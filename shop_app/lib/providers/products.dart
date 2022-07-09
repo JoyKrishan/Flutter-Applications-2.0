@@ -16,21 +16,27 @@ class Products with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> loadProductFromServer() async {
+  Future<void> loadProductFromServer(String userID) async {
     final getUrl =
         'https://shop-app-af1f4-default-rtdb.firebaseio.com/products.json?auth=${_token}';
+    final favUrl =
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/userFavourites/$userID.json?auth=$_token';
     try {
       final response = await http.get(Uri.parse(getUrl));
+      final favResponse = await http.get(Uri.parse(favUrl));
       final result = json.decode(response.body) as Map<String, dynamic>;
+      final favResult = json.decode(favResponse.body);
       _items.clear();
-      result.forEach((key, item) {
+      result.forEach((prodID, item) {
         //_items.clear();
         _items.add(Product(
-            id: key,
+            id: prodID,
             description: item['descriptiom'],
             title: item['title'],
             price: item['price'],
-            isFavourite: item['isFavourite'],
+            isFavourite: !favResult.containsKey(prodID)
+                ? false
+                : favResult[prodID] ?? false,
             imageUrl: item['imageUrl']));
       });
     } catch (error) {

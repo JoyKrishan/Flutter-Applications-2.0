@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/products.dart';
 import 'package:shop_app/screens/edit_product_screen.dart';
 import 'package:shop_app/widgets/drawer.dart';
@@ -12,7 +13,7 @@ class UserProductScreen extends StatelessWidget {
 
   Future<void> refreshProducts(BuildContext context) async {
     return await Provider.of<Products>(context, listen: false)
-        .loadProductFromServer();
+        .loadProductFromServer(Provider.of<Auth>(context).userID!);
   }
 
   @override

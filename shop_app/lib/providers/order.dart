@@ -85,7 +85,7 @@ class Order with ChangeNotifier {
               price: double.parse(price)));
       print(_items);
     } catch (err) {
-      print(err.toString() + "Here");
+      //print(err.toString() + "Here");
       rethrow;
     }
     notifyListeners();

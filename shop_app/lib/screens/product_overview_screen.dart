@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/cart.dart';
 import 'package:shop_app/providers/products.dart';
 import 'package:shop_app/widgets/badge.dart';
@@ -34,7 +35,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     isLoading = true;
     if (!didInit) {
       Provider.of<Products>(context, listen: false)
-          .loadProductFromServer()
+          .loadProductFromServer(Provider.of<Auth>(context).userID!)
           .catchError((err) {
         showDialog<Null>(
             context: context,

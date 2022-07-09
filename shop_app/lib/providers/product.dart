@@ -22,14 +22,14 @@ class Product with ChangeNotifier {
   });
 
   //utilizing optimistic updating
-  Future<void> toggleIsFavourite(String token) async {
+  Future<void> toggleIsFavourite(String token, String userID) async {
     final patchUrl =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/userFavourites/$userID/$id.json?auth=$token';
     bool? existingFav = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners();
-    final response = await http.patch(Uri.parse(patchUrl),
-        body: json.encode({"isFavourite": isFavourite}));
+    final response =
+        await http.put(Uri.parse(patchUrl), body: json.encode(isFavourite));
     if (response.statusCode > 300) {
       isFavourite = existingFav;
       existingFav = null;
