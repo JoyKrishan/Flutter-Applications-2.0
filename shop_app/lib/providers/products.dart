@@ -9,16 +9,19 @@ import 'product.dart';
 class Products with ChangeNotifier {
   final List<Product> _items;
   final String _token;
+  final String userID;
 
-  Products(this._token, this._items);
+  Products(this._token, this._items, this.userID);
 
   List<Product> get getItems {
     return [..._items];
   }
 
-  Future<void> loadProductFromServer(String userID) async {
+  Future<void> loadProductFromServer([filterByUser = false]) async {
+    final filterQuery =
+        filterByUser ? 'orderBy="creatorID"&equalTo="$userID"' : '';
     final getUrl =
-        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products.json?auth=${_token}';
+        'https://shop-app-af1f4-default-rtdb.firebaseio.com/products.json?auth=$_token&$filterQuery';
     final favUrl =
         'https://shop-app-af1f4-default-rtdb.firebaseio.com/userFavourites/$userID.json?auth=$_token';
     try {
@@ -34,9 +37,7 @@ class Products with ChangeNotifier {
             description: item['descriptiom'],
             title: item['title'],
             price: item['price'],
-            isFavourite: !favResult.containsKey(prodID)
-                ? false
-                : favResult[prodID] ?? false,
+            isFavourite: favResult == null ? false : favResult[prodID] ?? false,
             imageUrl: item['imageUrl']));
       });
     } catch (error) {
@@ -54,6 +55,7 @@ class Products with ChangeNotifier {
     try {
       final response = await http.post(Uri.parse(url),
           body: json.encode({
+            "creatorID": userID,
             "title": prodData.title,
             "descriptiom": prodData.description,
             "price": prodData.price,

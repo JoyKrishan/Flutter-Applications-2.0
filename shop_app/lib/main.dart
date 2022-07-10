@@ -22,15 +22,18 @@ class ShopApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var curContext = context;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: ((ctx) => Auth())),
         ChangeNotifierProxyProvider<Auth, Products>(
-            create: (ctx) =>
-                Products(Provider.of<Auth>(ctx, listen: false).token!, []),
-            update: (ctx, auth, previousProducts) => Products(auth.token!,
-                previousProducts == null ? [] : previousProducts.getItems)),
+            create: (ctx) => Products(
+                Provider.of<Auth>(ctx, listen: false).token!,
+                [],
+                Provider.of<Auth>(ctx, listen: false).userID!),
+            update: (ctx, auth, previousProducts) => Products(
+                auth.token!,
+                previousProducts == null ? [] : previousProducts.getItems,
+                auth.userID!)),
         ChangeNotifierProxyProvider<Auth, Order>(
           create: (ctx) =>
               Order(Provider.of<Auth>(ctx, listen: false).token!, []),

@@ -13,12 +13,13 @@ class UserProductScreen extends StatelessWidget {
 
   Future<void> refreshProducts(BuildContext context) async {
     return await Provider.of<Products>(context, listen: false)
-        .loadProductFromServer(Provider.of<Auth>(context).userID!);
+        .loadProductFromServer(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    final productData = Provider.of<Products>(context);
+    //final productData = Provider.of<Products>(context);
+    print("rebuilding");
     return Scaffold(
       appBar: AppBar(
         title: Text("Your Products"),
@@ -31,22 +32,30 @@ class UserProductScreen extends StatelessWidget {
         ],
       ),
       drawer: CustomDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () {
-          return refreshProducts(context);
-        },
-        child: Padding(
-          padding: EdgeInsets.all(5),
-          child: ListView.builder(
-            itemBuilder: (ctx, i) {
-              return UserProductItem(
-                  id: productData.getItems[i].id,
-                  title: productData.getItems[i].title,
-                  imgUrl: productData.getItems[i].imageUrl);
-            },
-            itemCount: productData.getItems.length,
-          ),
-        ),
+      body: FutureBuilder(
+        future: refreshProducts(context),
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? const Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: () {
+                      return refreshProducts(context);
+                    },
+                    child: Consumer<Products>(
+                      builder: (context, productData, _) => Padding(
+                        padding: EdgeInsets.all(5),
+                        child: ListView.builder(
+                          itemBuilder: (ctx, i) {
+                            return UserProductItem(
+                                id: productData.getItems[i].id,
+                                title: productData.getItems[i].title,
+                                imgUrl: productData.getItems[i].imageUrl);
+                          },
+                          itemCount: productData.getItems.length,
+                        ),
+                      ),
+                    ),
+                  ),
       ),
     );
   }

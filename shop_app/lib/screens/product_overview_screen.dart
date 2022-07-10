@@ -35,7 +35,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
     isLoading = true;
     if (!didInit) {
       Provider.of<Products>(context, listen: false)
-          .loadProductFromServer(Provider.of<Auth>(context).userID!)
+          .loadProductFromServer()
           .catchError((err) {
         showDialog<Null>(
             context: context,
