@@ -8,8 +8,8 @@ import 'product.dart';
 
 class Products with ChangeNotifier {
   final List<Product> _items;
-  final String _token;
-  final String userID;
+  final String? _token;
+  final String? userID;
 
   Products(this._token, this._items, this.userID);
 
