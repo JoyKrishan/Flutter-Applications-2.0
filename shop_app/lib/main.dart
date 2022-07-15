@@ -11,6 +11,7 @@ import 'package:shop_app/screens/order_screen.dart';
 
 import 'package:shop_app/screens/product_detail_screen.dart';
 import 'package:shop_app/screens/product_overview_screen.dart';
+import 'package:shop_app/screens/splash_screen.dart';
 import 'package:shop_app/screens/user_product_screen.dart';
 
 void main() {
@@ -45,7 +46,17 @@ class ShopApp extends StatelessWidget {
       child: Consumer<Auth>(
         builder: (context, auth, _) => MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: auth.isAuth ? ProductOverviewScreen() : AuthScreen(),
+          home: auth.isAuth
+              ? ProductOverviewScreen()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapShot) =>
+                      authResultSnapShot.connectionState ==
+                              ConnectionState.waiting
+                          ? CustomSplashScreen()
+                          : authResultSnapShot.data == true
+                              ? ProductOverviewScreen()
+                              : AuthScreen()),
           theme: ThemeData(
               primarySwatch: Colors.teal,
               accentColor: Colors.deepOrange,
