@@ -98,6 +98,7 @@ class AuthCard extends StatefulWidget {
 
 class _AuthCardState extends State<AuthCard> {
   final GlobalKey<FormState> _formKey = GlobalKey();
+  late AnimationController controller;
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
     'email': '',
