@@ -42,7 +42,7 @@ class ProductDetailScreen extends StatelessWidget {
             Text(
               "${product.description}",
               softWrap: true,
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             )
           ],
         ),
