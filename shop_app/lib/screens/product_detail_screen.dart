@@ -31,7 +31,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             Text(
               "\$${product.price}",
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.bold,
                   fontSize: 25),
@@ -40,7 +40,7 @@ class ProductDetailScreen extends StatelessWidget {
               height: 10,
             ),
             Text(
-              "${product.description}",
+              product.description,
               softWrap: true,
               style: const TextStyle(fontSize: 20),
             )
