@@ -36,7 +36,7 @@ class ProductDetailScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 25),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
