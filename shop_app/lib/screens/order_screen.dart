@@ -43,7 +43,7 @@ class _OrderScreenState extends State<OrderScreen> {
     final orders = Provider.of<Order>(context).items;
     return Scaffold(
       appBar: AppBar(title: Text("Orders")),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : errorLoading
