@@ -263,7 +263,7 @@ class _AuthCardState extends State<AuthCard>
                 ),
                 //if (_authMode == AuthMode.Signup)
                 AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
+                  duration: const Duration(milliseconds: 300),
                   curve: Curves.easeIn,
                   constraints: BoxConstraints(
                       maxHeight: _authMode == AuthMode.Signup ? 120 : 0,
@@ -301,8 +301,8 @@ class _AuthCardState extends State<AuthCard>
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30.0, vertical: 8.0),
                     color: Theme.of(context).primaryColor,
                     textColor: Theme.of(context).primaryTextTheme.button!.color,
                   ),
