@@ -70,8 +70,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
         context: context,
         builder: (ctx) {
           return AlertDialog(
-            title: Text("An error occured!"),
-            content: Text("Could not complete the previous action"),
+            title: const Text("An error occured!"),
+            content: const Text("Could not complete the previous action"),
             actions: [
               TextButton(
                   onPressed: () {
