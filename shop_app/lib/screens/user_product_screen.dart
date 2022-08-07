@@ -28,10 +28,10 @@ class UserProductScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.pushNamed(context, EditProductScreen.routeName);
               },
-              icon: Icon(Icons.add))
+              icon: const Icon(Icons.add))
         ],
       ),
-      drawer: CustomDrawer(),
+      drawer: const CustomDrawer(),
       body: FutureBuilder(
         future: refreshProducts(context),
         builder: (context, snapshot) =>
@@ -43,7 +43,7 @@ class UserProductScreen extends StatelessWidget {
                     },
                     child: Consumer<Products>(
                       builder: (context, productData, _) => Padding(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         child: ListView.builder(
                           itemBuilder: (ctx, i) {
                             return UserProductItem(
