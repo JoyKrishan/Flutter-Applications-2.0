@@ -22,7 +22,7 @@ class UserProductScreen extends StatelessWidget {
     print("rebuilding");
     return Scaffold(
       appBar: AppBar(
-        title: Text("Your Products"),
+        title: const Text("Your Products"),
         actions: [
           IconButton(
               onPressed: () {
