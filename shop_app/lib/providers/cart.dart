@@ -37,11 +37,12 @@ class Cart with ChangeNotifier {
     return total.toStringAsFixed(1);
   }
 
-  Future<void> addItem(String productID, String title, double price) async {
+  Future<void> addItem(
+      String productID, String title, double price, String token) async {
     if (_items.containsKey(productID)) {
       final existingCartItem = _items[productID];
       final cartPatchUrl =
-          'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts/${existingCartItem!.id}.json';
+          'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts/${existingCartItem!.id}.json?auth=$token';
       final response = await http.patch(Uri.parse(cartPatchUrl),
           body: json.encode({"quantity": existingCartItem.quantity + 1}));
       if (response.statusCode > 300) {
@@ -55,11 +56,13 @@ class Cart with ChangeNotifier {
               price: existingItem.price,
               quantity: existingItem.quantity + 1));
     } else {
-      const cartPostUrl =
-          'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts.json';
+      //print("HI");
+      final cartPostUrl =
+          'https://shop-app-af1f4-default-rtdb.firebaseio.com/carts.json?auth=$token';
       try {
         final postRes = await http.post(Uri.parse(cartPostUrl),
             body: json.encode({"title": title, "price": price, "quantity": 1}));
+        //print(postRes.body);
         _items.putIfAbsent(
             productID,
             () => CartItem(
@@ -67,7 +70,7 @@ class Cart with ChangeNotifier {
                 title: title,
                 price: price,
                 quantity: 1));
-        print(_items);
+        //print(_items);
       } catch (err) {
         print(err);
         rethrow;

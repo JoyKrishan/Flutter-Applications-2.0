@@ -47,7 +47,8 @@ class ProductItem extends StatelessWidget {
               color: Theme.of(context).accentColor,
               onPressed: () async {
                 try {
-                  await cart.addItem(product.id, product.title, product.price);
+                  await cart.addItem(
+                      product.id, product.title, product.price, token!);
                   scaffold.clearSnackBars();
                   scaffold.showSnackBar(SnackBar(
                     content: Text("Added item to cart!"),

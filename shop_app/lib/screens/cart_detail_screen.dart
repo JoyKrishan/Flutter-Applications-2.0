@@ -73,11 +73,9 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
                                     isLoadingOrder = true;
                                   });
                                   try {
+                                    print("Here");
                                     await Provider.of<Order>(context,
-                                            listen: false)
-                                        .addOrderItem(
-                                            cartItems: cartItemList,
-                                            price: cart.totalAmount);
+                                        listen: false);
                                     cart.clear();
                                   } catch (err) {
                                     scaffold.showSnackBar(const SnackBar(

@@ -35,7 +35,8 @@ class _OrderItemState extends State<OrderItem> {
         ),
       ),
       if (expanded)
-        Container(
+        AnimatedContainer(
+          duration: Duration(milliseconds: 300),
           height: min(widget.orderData.items.length * 20 + 100.0, 180.0),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
