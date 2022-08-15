@@ -35,7 +35,7 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         "Total",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
@@ -73,9 +73,12 @@ class _CartDetailScreenState extends State<CartDetailScreen> {
                                     isLoadingOrder = true;
                                   });
                                   try {
-                                    print("Here");
+                                    //print("Here");
                                     await Provider.of<Order>(context,
-                                        listen: false);
+                                            listen: false)
+                                        .addOrderItem(
+                                            cartItems: cartItemList,
+                                            price: cart.totalAmount);
                                     cart.clear();
                                   } catch (err) {
                                     scaffold.showSnackBar(const SnackBar(

@@ -31,7 +31,7 @@ class Order with ChangeNotifier {
   }
 
   Future<void> setAndFetchOrders() async {
-    print("I am here too");
+    //print("I am here too");
     final getOrdersUrl =
         'https://shop-app-af1f4-default-rtdb.firebaseio.com/orders/$userId.json?auth=$token';
     final response = await http.get(Uri.parse(getOrdersUrl));
@@ -60,7 +60,7 @@ class Order with ChangeNotifier {
 
   Future<void> addOrderItem(
       {required List<CartItem> cartItems, required String price}) async {
-    print("I am here");
+    print("HEREEEEEEEEEEEEEEEEEEEEEEEEE");
     final addOrderUrl =
         'https://shop-app-af1f4-default-rtdb.firebaseio.com/orders/$userId.json?auth=$token';
     final timestamp = DateTime.now();

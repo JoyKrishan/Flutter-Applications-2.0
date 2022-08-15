@@ -64,23 +64,30 @@ class Auth with ChangeNotifier {
       });
       prefs.setString("userData", userData);
     } catch (err) {
+      print(err);
       rethrow;
     }
   }
 
   Future<bool> tryAutoLogin() async {
+    print("Tried Auto login");
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey("userData")) {
+      print("Tried Auto login 2");
       return false;
     }
     final extractedUserData = json.decode(prefs.getString("userData")!);
     final expiryDate =
         DateTime.parse(extractedUserData["expiryDate"] as String);
-    if (expiryDate.isBefore(DateTime.now())) return false;
+    if (expiryDate.isBefore(DateTime.now())) {
+      print("Hi");
+      return false;
+    }
 
     _userID = extractedUserData["userId"];
     _token = extractedUserData["token"];
     _expiryDate = DateTime.parse(extractedUserData["expiryDate"]);
+    print("Tried Auto login 3");
     _autoLogout();
     notifyListeners();
     return true;
