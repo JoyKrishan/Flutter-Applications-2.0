@@ -45,12 +45,12 @@ class CustomDrawer extends StatelessWidget {
                     context, UserProductScreen.routeName);
               },
             ),
-            Spacer(),
+            const Spacer(),
             ListTile(
               tileColor: Color.fromARGB(255, 230, 31, 16),
               textColor: Colors.white,
               iconColor: Colors.white,
-              title: Text("Logout"),
+              title: const Text("Logout"),
               leading: Icon(Icons.exit_to_app_sharp),
               onTap: () {
                 print("H");
