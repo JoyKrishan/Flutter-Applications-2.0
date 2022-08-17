@@ -51,7 +51,7 @@ class CustomDrawer extends StatelessWidget {
               textColor: Colors.white,
               iconColor: Colors.white,
               title: const Text("Logout"),
-              leading: Icon(Icons.exit_to_app_sharp),
+              leading: const Icon(Icons.exit_to_app_sharp),
               onTap: () {
                 print("H");
                 Provider.of<Auth>(context, listen: false).logout();
