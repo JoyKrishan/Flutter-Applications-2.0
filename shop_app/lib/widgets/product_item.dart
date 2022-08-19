@@ -37,7 +37,7 @@ class ProductItem extends StatelessWidget {
               child: FadeInImage(
                 image: NetworkImage(imageUrl),
                 fit: BoxFit.fill,
-                placeholder: AssetImage('assets/images/placeholder.png'),
+                placeholder: const AssetImage('assets/images/placeholder.png'),
               ),
             )),
         footer: GridTileBar(
@@ -51,7 +51,7 @@ class ProductItem extends StatelessWidget {
                       product.id, product.title, product.price, token!);
                   scaffold.clearSnackBars();
                   scaffold.showSnackBar(SnackBar(
-                    content: Text("Added item to cart!"),
+                    content: const Text("Added item to cart!"),
                     duration: Duration(seconds: 2),
                     action: SnackBarAction(
                       label: "UNDO",
