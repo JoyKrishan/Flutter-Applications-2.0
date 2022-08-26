@@ -58,6 +58,8 @@ class ShopApp extends StatelessWidget {
                               ? ProductOverviewScreen()
                               : AuthScreen()),
           theme: ThemeData(
+              appBarTheme:
+                  AppBarTheme(iconTheme: IconThemeData(color: Colors.black)),
               primarySwatch: Colors.teal,
               accentColor: Colors.deepOrange,
               fontFamily: 'Lato'),

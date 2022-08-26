@@ -14,24 +14,36 @@ class ProductDetailScreen extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-              expandedHeight: MediaQuery.of(context).size.height * 0.4,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Container(
-                  child: Text(
-                    product.title,
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-                background: Hero(
-                  tag: product.id,
-                  child: Image.network(
-                    product.imageUrl,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              )),
+          SliverLayoutBuilder(
+            builder: ((ctx, constraints) {
+              final scrolled = constraints.scrollOffset > 0;
+              return SliverAppBar(
+                  expandedHeight: MediaQuery.of(context).size.height * 0.4,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Container(
+                      color: scrolled
+                          ? Theme.of(context).appBarTheme.color
+                          : Colors.black54,
+                      child: Text(
+                        product.title,
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    background: Container(
+                      color: Colors.red,
+                      child: Hero(
+                        tag: product.id,
+                        child: Image.network(
+                          product.imageUrl,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ));
+            }),
+          ),
           SliverList(
               delegate: SliverChildListDelegate([
             const SizedBox(

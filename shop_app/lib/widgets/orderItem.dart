@@ -18,7 +18,11 @@ class _OrderItemState extends State<OrderItem> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Card(
+      AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        height: expanded
+            ? min(widget.orderData.items.length * 20 + 100.0, 100.0)
+            : 95,
         child: ListTile(
           title: Text("\$${widget.orderData.price}"),
           subtitle: Text(
@@ -37,7 +41,9 @@ class _OrderItemState extends State<OrderItem> {
       if (expanded)
         AnimatedContainer(
           duration: Duration(milliseconds: 300),
-          height: min(widget.orderData.items.length * 20 + 100.0, 180.0),
+          height: expanded
+              ? min(widget.orderData.items.length * 20 + 100.0, 180.0)
+              : 0,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Color.fromARGB(255, 225, 223, 223)),
